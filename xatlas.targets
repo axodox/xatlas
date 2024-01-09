@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">  
+  <PropertyGroup>
+    <xatlas-Libraries>$(MSBuildThisFileDirectory)..\..\bin\win-x64\$(Configuration)</xatlas-Libraries>
+    <xatlas-DependencyRoot>$(MSBuildThisFileDirectory)..\..\lib\win-x64\$(Configuration)</xatlas-DependencyRoot>
+    <xatlas-Dependencies>$([MSbuild]::Unescape($([System.String]::Join(';', $([System.IO.Directory]::GetFiles($(xatlas-DependencyRoot), '*.lib'))))))</xatlas-Dependencies>
+    <xatlas-Includes>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\..\include'))</xatlas-Includes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="$(xatlas-Libraries)\*.*">
+      <InProject>False</InProject>
+      <Link>%(FileName)%(Extension)</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemDefinitionGroup>
+    <Link>
+      <AdditionalLibraryDirectories>$(xatlas-Libraries);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(xatlas-Dependencies);%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(xatlas-Includes);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+</Project>

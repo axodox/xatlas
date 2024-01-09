@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <!-- The identifier that must be unique within the hosting gallery -->
+    <id>xatlas</id>
+
+    <!-- The package version number that is used when resolving dependencies -->
+    <version>1.0.0.0</version>
+
+    <!-- Authors contain text that appears directly on the gallery -->
+    <authors>Jonathan Young</authors>
+
+    <!-- Owners are typically nuget.org identities that allow gallery
+         users to earily find other packages by the same owners.  -->
+    <owners>axodox</owners>
+
+    <!-- License and project URLs provide links for the gallery -->
+    <license type="expression">MIT</license>
+    <projectUrl>https://github.com/jpcy/xatlas</projectUrl>
+    <repository type="git" url="https://github.com/jpcy/xatlas.git" branch="master"/>
+
+    <!-- The icon is used in Visual Studio's package manager UI -->
+    <!--<icon>icon.png</icon>-->
+
+    <!-- If true, this value prompts the user to accept the license when
+             installing the package. -->
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+
+    <!-- Any details about this particular release -->
+    <releaseNotes>Initial release</releaseNotes>
+
+    <!-- The description can be used in package manager UI. Note that the
+             nuget.org gallery uses information you add in the portal. -->
+    <description>xatlas is a small C++11 library with no external dependencies that generates unique texture coordinates suitable for baking lightmaps or texture painting.</description>
+
+    <!-- Copyright information -->
+    <copyright>Copyright © 2018-2020 Jonathan Young</copyright>
+
+    <!-- Tags appear in the gallery and can be used for tag searches -->
+    <tags>xatlas</tags>
+  </metadata>
+
+  <!-- A readme.txt will be displayed when the package is installed -->
+  <files>
+    <file src="bin\x64\debug\*.dll" target="bin\win-x64\debug" />
+    <file src="bin\x64\debug\*.pdb" target="bin\win-x64\debug" />
+    <file src="bin\x64\release\*.dll" target="bin\win-x64\release" />
+    <file src="bin\x64\release\*.pdb" target="bin\win-x64\release" />
+
+    <file src="bin\x64\debug\*.lib" target="lib\win-x64\debug" />
+    <file src="bin\x64\release\*.lib" target="lib\win-x64\release" />
+   
+    <file src="source\xatlas\xatlas.h" target="include" />
+    
+    <file src="xatlas.targets" target="build\native" />
+  </files>
+</package>

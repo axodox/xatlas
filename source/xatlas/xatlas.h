@@ -34,6 +34,12 @@ Copyright NVIDIA Corporation 2006 -- Ignacio Castano <icastano@nvidia.com>
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef XATLAS_EXPORTS
+#define XATLAS_API __declspec(dllexport)
+#else
+#define XATLAS_API __declspec(dllimport)
+#endif
+
 namespace xatlas {
 
 enum class ChartType
@@ -95,9 +101,9 @@ struct Atlas
 };
 
 // Create an empty atlas.
-Atlas *Create();
+XATLAS_API Atlas *Create();
 
-void Destroy(Atlas *atlas);
+XATLAS_API void Destroy(Atlas *atlas);
 
 enum class IndexFormat
 {
@@ -148,10 +154,10 @@ enum class AddMeshError
 };
 
 // Add a mesh to the atlas. MeshDecl data is copied, so it can be freed after AddMesh returns.
-AddMeshError AddMesh(Atlas *atlas, const MeshDecl &meshDecl, uint32_t meshCountHint = 0);
+XATLAS_API AddMeshError AddMesh(Atlas *atlas, const MeshDecl &meshDecl, uint32_t meshCountHint = 0);
 
 // Wait for AddMesh async processing to finish. ComputeCharts / Generate call this internally.
-void AddMeshJoin(Atlas *atlas);
+XATLAS_API void AddMeshJoin(Atlas *atlas);
 
 struct UvMeshDecl
 {
@@ -165,7 +171,7 @@ struct UvMeshDecl
 	IndexFormat indexFormat = IndexFormat::UInt16;
 };
 
-AddMeshError AddUvMesh(Atlas *atlas, const UvMeshDecl &decl);
+XATLAS_API AddMeshError AddUvMesh(Atlas *atlas, const UvMeshDecl &decl);
 
 // Custom parameterization function. texcoords initial values are an orthogonal parameterization.
 typedef void (*ParameterizeFunc)(const float *positions, float *texcoords, uint32_t vertexCount, const uint32_t *indices, uint32_t indexCount);
@@ -192,7 +198,7 @@ struct ChartOptions
 };
 
 // Call after all AddMesh calls. Can be called multiple times to recompute charts with different options.
-void ComputeCharts(Atlas *atlas, ChartOptions options = ChartOptions());
+XATLAS_API void ComputeCharts(Atlas *atlas, ChartOptions options = ChartOptions());
 
 struct PackOptions
 {
@@ -232,10 +238,10 @@ struct PackOptions
 };
 
 // Call after ComputeCharts. Can be called multiple times to re-pack charts with different options.
-void PackCharts(Atlas *atlas, PackOptions packOptions = PackOptions());
+XATLAS_API void PackCharts(Atlas *atlas, PackOptions packOptions = PackOptions());
 
 // Equivalent to calling ComputeCharts and PackCharts in sequence. Can be called multiple times to regenerate with different options.
-void Generate(Atlas *atlas, ChartOptions chartOptions = ChartOptions(), PackOptions packOptions = PackOptions());
+XATLAS_API void Generate(Atlas *atlas, ChartOptions chartOptions = ChartOptions(), PackOptions packOptions = PackOptions());
 
 // Progress tracking.
 enum class ProgressCategory
@@ -249,20 +255,20 @@ enum class ProgressCategory
 // May be called from any thread. Return false to cancel.
 typedef bool (*ProgressFunc)(ProgressCategory category, int progress, void *userData);
 
-void SetProgressCallback(Atlas *atlas, ProgressFunc progressFunc = nullptr, void *progressUserData = nullptr);
+XATLAS_API void SetProgressCallback(Atlas *atlas, ProgressFunc progressFunc = nullptr, void *progressUserData = nullptr);
 
 // Custom memory allocation.
 typedef void *(*ReallocFunc)(void *, size_t);
 typedef void (*FreeFunc)(void *);
-void SetAlloc(ReallocFunc reallocFunc, FreeFunc freeFunc = nullptr);
+XATLAS_API void SetAlloc(ReallocFunc reallocFunc, FreeFunc freeFunc = nullptr);
 
 // Custom print function.
 typedef int (*PrintFunc)(const char *, ...);
-void SetPrint(PrintFunc print, bool verbose);
+XATLAS_API void SetPrint(PrintFunc print, bool verbose);
 
 // Helper functions for error messages.
-const char *StringForEnum(AddMeshError error);
-const char *StringForEnum(ProgressCategory category);
+XATLAS_API const char *StringForEnum(AddMeshError error);
+XATLAS_API const char *StringForEnum(ProgressCategory category);
 
 } // namespace xatlas
 
